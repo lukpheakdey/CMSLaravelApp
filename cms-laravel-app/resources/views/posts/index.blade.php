@@ -11,7 +11,7 @@
             Posts
         </div>
         <div class="card-body">
-
+            @if($posts->count() > 0)
             <table class="table">
                 <thead>
                     <th>Image</th>
@@ -29,9 +29,20 @@
                         <td>
                             {{ $post->title }}
                         </td>
+                        @if($post->trashed())
+                        <td>
+                            <form action="{{ route('restore-posts', $post->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="btn btn-info btn-sm">Restore</button>
+                            </form>
+                        </td>
+                        @else
                         <td>
                             <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-info btn-sm">Edit</a>
                         </td>
+                        @endif
+                        <td>
 
                         <td>
                             <form action="{{ route('posts.destroy', $post->id) }}" method="POST">
@@ -46,6 +57,9 @@
                     @endforeach
                 </tbody>
             </table>
+            @else
+                <h3 class="text-center">No Posts Yet</h3>
+            @endif
         </div>
     </div>
 </div>

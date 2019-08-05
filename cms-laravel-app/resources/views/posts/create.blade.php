@@ -21,7 +21,8 @@
 
                 <div class="form-group">
                     <label for="content"> Content </label>
-                    <textarea cols="5" rows="5" class="form-control" id="content" name="content"></textarea>
+                    <input id="content" type="hidden" name="content" value="{{ isset($post) ? $post->content : '' }}">
+                    <trix-editor input="content"></trix-editor>
                 </div>
                 <div class="form-group">
                     <label for="pubished_at"> Pubished At </label>
@@ -40,4 +41,25 @@
             </form>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.0.0/trix.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+  <script>
+    flatpickr('#pubished_at', {
+      enableTime: true,
+      enableSeconds: true
+    })
+    // $(document).ready(function() {
+    //   $('.tags-selector').select2();
+    // })
+  </script>
+@endsection
+
+@section('css')
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.0.0/trix.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 @endsection
