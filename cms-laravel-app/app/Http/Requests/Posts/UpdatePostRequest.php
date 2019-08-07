@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Categories;
+namespace App\Http\Requests\Posts;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateCategoriesRequest extends FormRequest
+class UpdatePostRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,10 @@ class CreateCategoriesRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:categories'
+            'title' => 'required',
+            'description' => 'required',
+            'content' => 'required',
+            'category' => 'required'
         ];
     }
 }

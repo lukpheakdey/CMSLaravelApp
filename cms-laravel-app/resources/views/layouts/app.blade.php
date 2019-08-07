@@ -9,26 +9,28 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-
-
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
+    <style>
+      .btn-info {
+        color: #fff;
+      }
+    </style>
+
     @yield('css')
-
-
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    {{-- {{ config('app.name', 'Laravel') }} --}}
+                    <img width="170" height="60" eclass="logo-light" src="{{ asset('img/logo-light.png') }}" alt="logo">
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -59,11 +61,17 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('users.edit-profile') }}">
+                                        My Profile
+                                    </a>
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
+
+
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
@@ -78,41 +86,56 @@
 
         <main class="py-4">
             @auth
-                <div class="container">
-                    @if(session()->has('success'))
-                        <div class="alert alert-success">
-                          {{ session()->get('success') }}
-                        </div>
-                    @endif
-                    <div class="row">
-                        <div class="col-md-4">
-                            <ul class="list-group">
-                                <li class="list-group-item">
-                                    <a href="{{ route('posts.index')}}"> Post </a>
-                                </li>
-                                <li class="list-group-item">
-                                    <a href="{{ route('categories.index')}}"> Categories </a>
-                                </li>
-                            </ul>
-
-                            <ul class="list-group mt-5">
-                                <li class="list-group-item">
-                                    <a href="{{ route('trashed-posts.index')}}"> Trashed Post  </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-md-8">
-                                @yield('content')
-                        </div>
+              <div class="container">
+                  @if(session()->has('success'))
+                    <div class="alert alert-success">
+                      {{ session()->get('success') }}
                     </div>
-                </div>
-            @else
-                @yield('content')
-            @endauth
+                  @endif
+                  @if(session()->has('error'))
+                    <div class="alert alert-danger">
+                      {{ session()->get('error') }}
+                    </div>
+                  @endif
+                  <div class="row">
+                    <div class="col-md-4">
+                      <ul class="list-group">
+                        @if(auth()->user()->isAdmin())
+                          <li class="list-group-item">
+                            <a href="{{ route('users.index') }}">
+                              Users
+                            </a>
+                          </li>
+                        @endif
+                        <li class="list-group-item">
+                          <a href="{{ route('tags.index') }}">Tags</a>
+                        </li>
+                        <li class="list-group-item">
+                          <a href="{{ route('posts.index') }}">Posts</a>
+                        </li>
+                        <li class="list-group-item">
+                          <a href="{{ route('categories.index') }}">Categories</a>
+                        </li>
+                      </ul>
 
+                      <ul class="list-group mt-5">
+                        <li class="list-group-item">
+                          <a href="{{ route('trashed-posts.index') }}">Trashed Posts</a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="col-md-8">
+                        @yield('content')
+                    </div>
+                  </div>
+              </div>
+            @else
+              @yield('content')
+            @endauth
         </main>
     </div>
 
+    <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
     @yield('scripts')
 </body>
